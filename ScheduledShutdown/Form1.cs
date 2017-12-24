@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ScheduledShutdown
@@ -22,22 +15,22 @@ namespace ScheduledShutdown
         {
             try
             {
-                int seconds = int.Parse(comboBox2.Text) * 3600;
-                switch (comboBox1.SelectedIndex)
+                int seconds;
+                if (comboBox1.Text == "")
                 {
-                    case (0):
-                        {
-                            Process.Start("CMD.exe", "/C shutdown -s -t " + seconds.ToString());
-                            break;
-                        }
-                    case (1):
-                        {
-                            Process.Start("CMD.exe", "/C shutdown -r -t " + seconds.ToString());
-                            break;
-                        }
+                    seconds = int.Parse(comboBox2.Text) * 3600;
                 }
+                else if (comboBox2.Text == "")
+                {
+                    seconds = int.Parse(comboBox1.Text) * 60;
+                }
+                else
+                {
+                    seconds = int.Parse(comboBox2.Text) * 3600 + int.Parse(comboBox1.Text) * 60;
+                }
+                Process.Start("CMD.exe", "/C shutdown -s -t " + seconds.ToString());
             }
-            catch(Exception) { MessageBox.Show("Make sure you have picked desired method and hours","Error"); }
+            catch(Exception) { MessageBox.Show("Make sure you have picked desired method, hours and minutes","Error"); }
         }
 
         private void cancel_Click(object sender, EventArgs e)
